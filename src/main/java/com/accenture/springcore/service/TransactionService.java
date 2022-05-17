@@ -48,14 +48,16 @@ public class TransactionService {
         return filteredByType;
     }
 
-    public List<Transaction> getAllFilteredByMinAmount() {
+    public List<Transaction> getAllFilteredByMinAmount(double minAMount) {
         return getAll().stream()
+                .filter(transaction -> transaction.getAmount() > minAMount)
                 .sorted(Comparator.comparing(Transaction::getAmount))
                 .collect(Collectors.toList());
     }
 
-    public List<Transaction> getAllFilteredByMaxAmount() {
+    public List<Transaction> getAllFilteredByMaxAmount(double maxAmount) {
         return getAll().stream()
+                .filter(transaction -> transaction.getAmount() < maxAmount)
                 .sorted(Comparator.comparing(Transaction::getAmount).reversed())
                 .collect(Collectors.toList());
     }

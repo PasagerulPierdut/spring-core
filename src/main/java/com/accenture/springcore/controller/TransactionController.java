@@ -49,6 +49,16 @@ public class TransactionController {
         }
     }
 
+    @GetMapping("/minAmount")
+    public ResponseEntity<List<Transaction>> getAllByMinAmount(@RequestParam double minAmount) {
+        return new ResponseEntity<>(transactionService.getAllFilteredByMinAmount(minAmount), HttpStatus.OK);
+    }
+
+    @GetMapping("/maxAmount")
+    public ResponseEntity<List<Transaction>> getAllByMaxAmount(@RequestParam double maxAmount) {
+        return new ResponseEntity<>(transactionService.getAllFilteredByMaxAmount(maxAmount), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity addNewTransaction(@RequestBody Transaction transaction) {
         try {
@@ -67,7 +77,7 @@ public class TransactionController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteTransaction(@RequestParam Integer id) {
         transactionService.deleteTransaction(id);
         return new ResponseEntity(HttpStatus.GONE);
