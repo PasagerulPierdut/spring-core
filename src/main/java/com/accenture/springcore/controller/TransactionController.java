@@ -23,7 +23,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> returnTransactionById(@RequestParam Integer id) {
+    public ResponseEntity<Object> returnTransactionById(@PathVariable("id") Integer id) {
         try {
             return ResponseEntity.ok(transactionService.getOneById(id));
         } catch (NoSuchElementException exception) {
@@ -31,9 +31,31 @@ public class TransactionController {
         }
     }
 
+    @GetMapping("/product")
+    public ResponseEntity<Object> getAllByProduct(@RequestParam("product") String product) {
+        try {
+            return new ResponseEntity<>(transactionService.getAllFilteredByProduct(product), HttpStatus.OK);
+        } catch (NoSuchFieldException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/type")
+    public ResponseEntity<Object> getAllByType(@RequestParam("type") String type) {
+        try {
+            return new ResponseEntity<>(transactionService.getAllFilteredByType(type), HttpStatus.OK);
+        } catch (NoSuchFieldException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping
-    public ResponseEntity<Integer> addNewTransaction(@RequestBody Transaction transaction) {
-        return new ResponseEntity<>(transactionService.addNew(transaction), HttpStatus.CREATED);
+    public ResponseEntity addNewTransaction(@RequestBody Transaction transaction) {
+        try {
+            return new ResponseEntity<>(transactionService.addNew(transaction), HttpStatus.CREATED);
+        } catch (IllegalArgumentException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")

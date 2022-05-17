@@ -1,5 +1,7 @@
 package com.accenture.springcore.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,6 +22,9 @@ public class Transaction {
 @Column(name = "AMOUNT")
     private double amount;
 
+    public Transaction() {
+    }
+
     public Transaction(Integer id, String product, Type type, double amount) {
         this.id = id;
         this.product = product;
@@ -27,7 +32,7 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Transaction(String product, Type type, double amount) {
+    public Transaction( String product,  Type type, double amount) {
         this.product = product;
         this.type = type;
         this.amount = amount;

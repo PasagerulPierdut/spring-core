@@ -40,7 +40,7 @@ public class TransactionService {
 
     public List<Transaction> getAllFilteredByType(String type) throws NoSuchFieldException {
         List<Transaction> filteredByType = getAll().stream()
-                .filter(transaction -> transaction.getType().equals(type))
+                .filter(transaction -> transaction.getType().name().equals(type))
                 .collect(Collectors.toList());
         if (filteredByType.isEmpty()) {
             throw new NoSuchFieldException(NO_TRADES);
@@ -69,8 +69,8 @@ public class TransactionService {
         }
     }
 
-    public Integer addNew(Transaction transaction) {
-        return checkTransaction(transaction);
+    public Transaction addNew(Transaction transaction) {
+        return transactionRepository.save(checkTransaction(transaction));
     }
 
     public Transaction replaceTransaction(Integer id, Transaction source) {
@@ -85,16 +85,16 @@ public class TransactionService {
         transactionRepository.deleteById(id);
     }
 
-    private Integer checkTransaction(Transaction transaction) {
+    private Transaction checkTransaction(Transaction transaction) {
+        boolean aTrue = true;
         if (transaction.getProduct() == null) {
             throw new IllegalArgumentException("Null value passed as product.");
-        } else if (!transaction.getType().equals(Type.BUY) || (!transaction.getType().equals(Type.SELL))) {
+        } else if (((transaction.getType() == Type.BUY) || (transaction.getType() == Type.SELL)) != aTrue) {
             throw new IllegalArgumentException("The type of transaction mut be BUY or SELL");
         } else if (transaction.getAmount() < 0.1) {
-            throw new IllegalArgumentException("Negative values not allowed.");
+            throw new IllegalArgumentException("Negative/zero values not allowed.");
         } else {
-            Transaction saved = transactionRepository.save(transaction);
-            return saved.getId();
+            return transaction;
         }
     }
 
