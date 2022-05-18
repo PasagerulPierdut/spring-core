@@ -1,40 +1,43 @@
 package com.accenture.springcore.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Entity
-@Table
+@Table(name="TRANSACTIONS")
 public class Transaction {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-@Column(name = "ID")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
 
-@Column(name = "PRODUCT")
+    @Column(name = "PRODUCT")
+    @NotNull(message = "Null values not allowed.")
     private String product;
 
-@Enumerated
-@Column(name = "TYPE")
-    private Type type;
+    @Enumerated
+    @Column(name = "TRANSACTION_TYPE")
+    @NotNull
+    private TransactionType transactionType;
 
-@Column(name = "AMOUNT")
+    @Column(name = "AMOUNT")
+    @Positive(message = "Amount values should be above zero.")
     private double amount;
 
     public Transaction() {
     }
 
-    public Transaction(Integer id, String product, Type type, double amount) {
+    public Transaction(Integer id, String product, TransactionType transactionType, double amount) {
         this.id = id;
         this.product = product;
-        this.type = type;
+        this.transactionType = transactionType;
         this.amount = amount;
     }
 
-    public Transaction( String product,  Type type, double amount) {
+    public Transaction(String product, TransactionType transactionType, double amount) {
         this.product = product;
-        this.type = type;
+        this.transactionType = transactionType;
         this.amount = amount;
     }
 
@@ -54,12 +57,12 @@ public class Transaction {
         this.product = product;
     }
 
-    public Type getType() {
-        return type;
+    public TransactionType getType() {
+        return transactionType;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 
     public double getAmount() {
