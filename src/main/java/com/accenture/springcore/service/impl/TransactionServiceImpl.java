@@ -8,6 +8,7 @@ import com.accenture.springcore.model.TransactionType;
 import com.accenture.springcore.repository.TransactionRepository;
 import com.accenture.springcore.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,10 +30,10 @@ public class TransactionServiceImpl implements TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
-//    @Override
-//    public List<Transaction> getAll() {
-//        return transactionRepository.findAll();
-//    }
+    @Override
+    public List<Transaction> getAll() {
+        return transactionRepository.findAll();
+    }
 
     public List<Transaction> getAll(Criteria criteria) {
         List<Transaction> finalList = transactionRepository.findAll();
