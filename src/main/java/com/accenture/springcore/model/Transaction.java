@@ -1,44 +1,67 @@
 package com.accenture.springcore.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import com.accenture.springcore.utils.validator.ValidTransaction;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name="TRANSACTIONS")
+@Table(name = "TRANSACTIONS")
+@ValidTransaction
 public class Transaction {
+
+    @GeneratedValue(strategy = IDENTITY)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 
+    @Column(name = "USER_ID")
+    private Integer userId;
+
     @Column(name = "PRODUCT")
-    @NotNull(message = "Null values not allowed.")
     private String product;
 
     @Enumerated
     @Column(name = "TRANSACTION_TYPE")
-    @NotNull
-    private TransactionType transactionType;
+    private TransactionType type;
 
     @Column(name = "AMOUNT")
-    @Positive(message = "Amount values should be above zero.")
     private double amount;
+
+    @Column(name = "CREATED")
+    private LocalDateTime createdAt;
+
+    @Column(name = "CONFIRMED")
+    private boolean confirmed;
 
     public Transaction() {
     }
 
-    public Transaction(Integer id, String product, TransactionType transactionType, double amount) {
+    public Transaction(Integer id, Integer userId, String product, TransactionType type,
+                       double amount, LocalDateTime createdAt, boolean confirmed) {
         this.id = id;
+        this.userId = userId;
         this.product = product;
-        this.transactionType = transactionType;
+        this.type = type;
         this.amount = amount;
+        this.createdAt = createdAt;
+        this.confirmed = confirmed;
     }
 
-    public Transaction(String product, TransactionType transactionType, double amount) {
+    public Transaction(Integer userId, String product, TransactionType type, double amount, LocalDateTime createdAt, boolean confirmed) {
+        this.userId = userId;
         this.product = product;
-        this.transactionType = transactionType;
+        this.type = type;
         this.amount = amount;
+        this.createdAt = createdAt;
+        this.confirmed = confirmed;
     }
 
     public Integer getId() {
@@ -47,6 +70,14 @@ public class Transaction {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getProduct() {
@@ -58,11 +89,11 @@ public class Transaction {
     }
 
     public TransactionType getType() {
-        return transactionType;
+        return type;
     }
 
-    public void setType(TransactionType transactionType) {
-        this.transactionType = transactionType;
+    public void setType(TransactionType type) {
+        this.type = type;
     }
 
     public double getAmount() {
@@ -72,4 +103,30 @@ public class Transaction {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "product='" + product + '\'' +
+                ", confirmed=" + confirmed +
+                '}';
+    }
 }
+
+

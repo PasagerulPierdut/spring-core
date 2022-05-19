@@ -2,11 +2,22 @@ package com.accenture.springcore.model;
 
 public enum TransactionType {
 
-    SELL("sell"),
-    BUY("buy");
+    SELL("SELL"),
+    BUY("BUY");
 
-    private final String label;
-    private TransactionType(String label) {
-        this.label = label;
+    private final String value;
+    TransactionType(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 }
+
+
