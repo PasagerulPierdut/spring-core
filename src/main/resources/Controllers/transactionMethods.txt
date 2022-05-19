@@ -1,0 +1,29 @@
+# NEW TRANSACTION #
+
+curl --location --request POST 'localhost:8080/transactions' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "userId":"3", "product": "Test", "type":"BUY", "amount":327.6, "createdAt": "2022-05-19T20:16:51.58964789", "confirmed":false
+
+}'
+
+# GET ONE TRANSACTION #
+
+curl --location --request GET 'localhost:8080/transactions/3'
+
+# GET ALL TRANSACTIONS #
+
+curl --location --request GET 'localhost:8080/transactions'
+
+# UPDATE TRANSACTION #
+
+curl --location --request PUT 'localhost:8080/transactions/3' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "userId":"3", "product": "Test MODIFIED", "type":"BUY", "amount":327.6, "createdAt": "2022-05-19T20:16:51.58964789", "confirmed":false
+
+}'
+
+# DELETE TRANSACTION
+
+curl --location --request DELETE 'localhost:8080/transactions/5'
