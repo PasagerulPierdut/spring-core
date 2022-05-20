@@ -1,27 +1,34 @@
 package com.accenture.springcore.model;
 
+import java.time.LocalDateTime;
+
+//TODO replace with Builder , maybe.
 public class Criteria {
 
     private String product;
     private TransactionType type;
     private Double minAmount;
     private Double maxAmount;
+    private LocalDateTime createdAt;
+    private boolean confirmed;
 
     public Criteria() {
     }
 
-    public Criteria(String product, TransactionType type, Double minAmount, Double maxAmount) {
+    public Criteria(String product, TransactionType type, Double minAmount, Double maxAmount, LocalDateTime createdAt, boolean confirmed) {
         this.product = product;
         this.type = type;
         this.minAmount = minAmount;
         this.maxAmount = maxAmount;
+        this.createdAt = createdAt;
+        this.confirmed = confirmed;
     }
 
     public String getProduct() {
         return product;
     }
 
-    public Enum getType() {
+    public TransactionType getType() {
         return type;
     }
 
@@ -33,20 +40,11 @@ public class Criteria {
         return maxAmount;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setType(TransactionType type) {
-        this.type = type;
+    public boolean isConfirmed() {
+        return confirmed;
     }
-
-    public void setMinAmount(Double minAmount) {
-        this.minAmount = minAmount;
-    }
-
-    public void setMaxAmount(Double maxAmount) {
-        this.maxAmount = maxAmount;
-    }
-
 }
