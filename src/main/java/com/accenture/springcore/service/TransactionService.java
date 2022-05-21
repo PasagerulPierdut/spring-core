@@ -1,45 +1,40 @@
 package com.accenture.springcore.service;
 
-import com.accenture.springcore.utils.validator.ValidTransaction;
-import com.accenture.springcore.exception.EntityNotFoundException;
-import com.accenture.springcore.model.Criteria;
+import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
 import com.accenture.springcore.model.Transaction;
+import com.accenture.springcore.model.SortCriteria;
+import com.accenture.springcore.repository.TransactionDao;
 import com.accenture.springcore.repository.TransactionRepository;
+import com.accenture.springcore.repository.base.BaseService;
+import com.accenture.springcore.utils.validator.ValidTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.NoSuchElementException;
 
 import static java.lang.Boolean.TRUE;
 
 @Service
-public class TransactionService {
+public class TransactionService extends BaseService<Transaction, Integer> {
 
     private TransactionRepository transactionRepository;
 
+    private TransactionDao transactionDao;
+
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository) {
+    public TransactionService(TransactionRepository transactionRepository, TransactionDao transactionDao) {
         this.transactionRepository = transactionRepository;
+        this.transactionDao = transactionDao;
     }
 
-    public List<Transaction> getAll(Criteria criteria) {
-        List<Transaction> finalList = transactionRepository.findAll();
-        Stream<Transaction> stream = finalList.stream();
-        if (criteria.getProduct() != null) {
-            stream = stream.filter(transaction -> transaction.getProduct().equals(criteria.getProduct()));
-        }
-        if (criteria.getType() != null) {
-            stream = stream.filter(transaction -> transaction.getType().equals(criteria.getType()));
-        }
-        if (criteria.getMinAmount() != null) {
-            stream = stream.filter(transaction -> transaction.getAmount() > criteria.getMinAmount());
-        }
-        if (criteria.getMaxAmount() != null) {
-            stream = stream.filter(transaction -> transaction.getAmount() < criteria.getMaxAmount());
-        }
-        return stream.toList();
+    public List<Transaction> findAll(SortCriteria sortCriteria) {
+        return transactionDao.findAllByCriteria(sortCriteria.getId(), sortCriteria.getUserId(),
+                sortCriteria.getProduct(), sortCriteria.getTransactionType(),
+                (Double)sortCriteria.getMinAmount(), (Double) sortCriteria.getMaxAmount(),
+                formatDate(sortCriteria.getStartDateTime()), formatDate(sortCriteria.getEndDateTime()), sortCriteria.isConfirmed());
     }
 
     public Transaction getOneById(Integer id) {
@@ -56,17 +51,13 @@ public class TransactionService {
             throws EntityNotFoundException {
         Transaction target = getOneById(id);
         target.setProduct(source.getProduct());
-        target.setType(source.getType());
+        target.setTransactionType(source.getTransactionType());
         target.setAmount(source.getAmount());
         return transactionRepository.save(target);
     }
 
     public void deleteTransaction(Integer id) {
-        transactionRepository.findById(id).map(transaction -> {
-            transactionRepository.delete(transaction);
-            return transaction;
-        }).orElseThrow(() -> new EntityNotFoundException
-                ("This transaction does not exist in database."));
+transactionRepository.findById(id).ifPresentOrElse(transaction -> transactionRepository.deleteById(transaction.getId()),NoSuchElementException::new);
     }
 
     public List<Transaction> getAllConfirmedTransactions() {
@@ -83,5 +74,11 @@ public class TransactionService {
                 transactionRepository.save(transaction);
             }
         });
+    }
+
+    private LocalDateTime formatDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime qTime =  LocalDateTime.parse(date, formatter);
+        return qTime;
     }
 }

@@ -1,4 +1,4 @@
-package com.accenture.springcore.exception;
+package com.accenture.springcore.exception.customExceptions;
 
 public class NotAuthorizedException extends Exception{
 

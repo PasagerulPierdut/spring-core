@@ -18,27 +18,33 @@ public class TransactionValidator implements ConstraintValidator<ValidTransactio
         boolean validUserId = transaction.getUserId() != null;
         if (!validUserId) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("Every transaction should belong to some user.");
+            constraintValidatorContext.buildConstraintViolationWithTemplate(
+                    "Every transaction should belong to some user.");
         }
         boolean validProduct = transaction.getProduct() != null;
         if (!validProduct) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("The product must have a name.").addConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate(
+                    "The product must have a name.").addConstraintViolation();
         }
-        boolean validType = transaction.getType() == TransactionType.BUY || transaction.getType() == TransactionType.SELL;
+        boolean validType = transaction.getTransactionType() == TransactionType.BUY || transaction.getTransactionType() == TransactionType.SELL;
         if (!validType) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("Only BUY or SELL types allowed.").addConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate(
+                    "Only BUY or SELL types allowed.").addConstraintViolation();
         }
         boolean validAmount = transaction.getAmount() > 0.0;
         if (!validAmount) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("Amount must be a positive value.").addConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate(
+                    "Amount must be a positive value.").addConstraintViolation();
         }
-        boolean validCreation = transaction.getCreatedAt().isBefore(LocalDateTime.now()) && (transaction.getCreatedAt() != null);
+        boolean validCreation = transaction.getCreatedAt().isBefore(LocalDateTime.now()) &&
+                (transaction.getCreatedAt() != null);
         if (validCreation) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext.buildConstraintViolationWithTemplate("Null or future dates are, obviously, not allowed.");
+            constraintValidatorContext.buildConstraintViolationWithTemplate(
+                    "Null or future dates are, obviously, not allowed.");
         }
         return validType && validAmount && validProduct && validCreation;
     }

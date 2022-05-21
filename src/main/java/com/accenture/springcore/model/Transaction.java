@@ -5,22 +5,13 @@ import com.accenture.springcore.utils.validator.ValidTransaction;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "TRANSACTIONS")
 @ValidTransaction
-public class Transaction {
-
-    @GeneratedValue(strategy = IDENTITY)
-    @Id
-    @Column(name = "ID")
-    private Integer id;
+public class Transaction extends BaseEntity {
 
     @Column(name = "USER_ID")
     private Integer userId;
@@ -30,7 +21,7 @@ public class Transaction {
 
     @Enumerated
     @Column(name = "TRANSACTION_TYPE")
-    private TransactionType type;
+    private TransactionType transactionType;
 
     @Column(name = "AMOUNT")
     private double amount;
@@ -44,32 +35,14 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Integer id, Integer userId, String product, TransactionType type,
-                       double amount, LocalDateTime createdAt, boolean confirmed) {
-        this.id = id;
+    public Transaction(Integer userId, String product, TransactionType transactionType, double amount,
+                       LocalDateTime createdAt, boolean confirmed) {
         this.userId = userId;
         this.product = product;
-        this.type = type;
+        this.transactionType = transactionType;
         this.amount = amount;
         this.createdAt = createdAt;
         this.confirmed = confirmed;
-    }
-
-    public Transaction(Integer userId, String product, TransactionType type, double amount, LocalDateTime createdAt, boolean confirmed) {
-        this.userId = userId;
-        this.product = product;
-        this.type = type;
-        this.amount = amount;
-        this.createdAt = createdAt;
-        this.confirmed = confirmed;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getUserId() {
@@ -88,12 +61,12 @@ public class Transaction {
         this.product = product;
     }
 
-    public TransactionType getType() {
-        return type;
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 
-    public void setType(TransactionType type) {
-        this.type = type;
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 
     public double getAmount() {
