@@ -57,7 +57,8 @@ public class TransactionService extends BaseService<Transaction, Integer> {
     }
 
     public void deleteTransaction(Integer id) {
-transactionRepository.findById(id).ifPresentOrElse(transaction -> transactionRepository.deleteById(transaction.getId()),NoSuchElementException::new);
+transactionRepository.findById(id).ifPresentOrElse(
+        transaction -> transactionRepository.deleteById(transaction.getId()),NoSuchElementException::new);
     }
 
     public List<Transaction> getAllConfirmedTransactions() {
@@ -77,8 +78,12 @@ transactionRepository.findById(id).ifPresentOrElse(transaction -> transactionRep
     }
 
     private LocalDateTime formatDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime qTime =  LocalDateTime.parse(date, formatter);
-        return qTime;
+        if (date == null) {
+            return LocalDateTime.now();
+        } else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+            LocalDateTime qTime = LocalDateTime.parse(date, formatter);
+            return qTime;
+        }
     }
 }

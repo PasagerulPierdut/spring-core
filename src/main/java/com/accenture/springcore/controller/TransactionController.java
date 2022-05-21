@@ -1,9 +1,8 @@
 package com.accenture.springcore.controller;
 
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
-import com.accenture.springcore.model.Transaction;
 import com.accenture.springcore.model.SortCriteria;
-import com.accenture.springcore.model.TransactionType;
+import com.accenture.springcore.model.Transaction;
 import com.accenture.springcore.service.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,11 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Type;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -36,8 +32,7 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> findAll(
-                                                     SortCriteria sortCriteria) {
+    public ResponseEntity<List<Transaction>> findAll(SortCriteria sortCriteria) {
         return new ResponseEntity<>(transactionService.findAll(sortCriteria), OK);
     }
 

@@ -20,7 +20,9 @@ public class SortCriteria {
         this.product = product;
     }
 
-    public SortCriteria(Integer id, Integer userId, String product, TransactionType transactionType, double minAmount, double maxAmount, String startDateTime, String endDateTime, boolean confirmed) {
+    public SortCriteria(Integer id, Integer userId, String product, TransactionType transactionType,
+                        double minAmount, double maxAmount, String startDateTime, String endDateTime,
+                        boolean confirmed) {
         this.id = id;
         this.userId = userId;
         this.product = product;
