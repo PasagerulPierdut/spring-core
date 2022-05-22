@@ -25,7 +25,7 @@ public class TransactionDao {
         this.entityManager = entityManager;
     }
 
-    public List<Transaction> findAllByCriteria(Integer id, Integer userId, String product,
+    public List<Transaction> findAllByCriteria(Integer id, Integer userId,
                                                TransactionType transactionType, Double minAmount, Double maxAmount,
                                                LocalDateTime startTime, LocalDateTime endTime, Boolean confirmed) {
 
@@ -39,9 +39,6 @@ public class TransactionDao {
         }
         if (userId != null) {
             predicates.add(criteriaBuilder.equal(origin.get("userId"), userId));
-        }
-        if (product != null) {
-            predicates.add(criteriaBuilder.like(origin.get("product"), "%" + product + "%"));
         }
         if (transactionType != null && (transactionType.equals(TransactionType.SELL) || transactionType.equals(TransactionType.BUY))) {
 
@@ -62,7 +59,6 @@ public class TransactionDao {
         if (confirmed != null) {
             predicates.add(criteriaBuilder.equal(origin.get("confirmed"), confirmed));
         }
-        //TODO clarify "confirmed/ unconfirmed" adding option
         Predicate[] searchParams = new Predicate[predicates.size()];
         predicates.toArray(searchParams);
         criteriaQuery.where(searchParams);

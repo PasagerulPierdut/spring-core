@@ -1,7 +1,5 @@
 package com.accenture.springcore.model;
 
-import lombok.Builder;
-
 //TODO replace with Builder , maybe.
 public class SortCriteria {
 

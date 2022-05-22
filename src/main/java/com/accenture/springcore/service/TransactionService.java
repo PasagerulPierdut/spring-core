@@ -1,6 +1,7 @@
 package com.accenture.springcore.service;
 
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
+import com.accenture.springcore.model.Product;
 import com.accenture.springcore.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
 import com.accenture.springcore.repository.TransactionDao;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
 
@@ -30,18 +34,22 @@ public class TransactionService extends BaseService<Transaction, Integer> {
         this.transactionDao = transactionDao;
     }
 
-    public List<Transaction> findAll(Integer id, Integer userId, String product, TransactionType transactionType,
+    public List<Transaction> findAll() {
+        return transactionRepository.findAll();
+    }
+
+    public List<Transaction> findAll(Integer id, Integer userId, TransactionType transactionType,
                                      Double minAmount, Double maxAmount, String startDateTime, String endDateTime,
                                      boolean confirmed) {
         LocalDateTime startTime = null;
-        LocalDateTime endTime  = null;
-        if(startDateTime != null) {
+        LocalDateTime endTime = null;
+        if (startDateTime != null) {
             startTime = formatDate(startDateTime);
         }
-        if(endDateTime != null) {
+        if (endDateTime != null) {
             endTime = formatDate(endDateTime);
         }
-        return transactionDao.findAllByCriteria(id, userId, product, transactionType, minAmount,
+        return transactionDao.findAllByCriteria(id, userId, transactionType, minAmount,
                 maxAmount, startTime, endTime, confirmed);
     }
 
@@ -52,6 +60,7 @@ public class TransactionService extends BaseService<Transaction, Integer> {
     }
 
     public Transaction addNew(@ValidTransaction Transaction transaction) {
+        transaction.setCreatedAt(LocalDateTime.now());
         return transactionRepository.save(transaction);
     }
 
@@ -85,9 +94,25 @@ public class TransactionService extends BaseService<Transaction, Integer> {
         });
     }
 
+    public Map<TransactionType, List<Transaction>> findAllByTransactionType() {
+        return transactionRepository.findAll().stream()
+                .collect(Collectors.groupingBy(Transaction::getTransactionType));
+    }
+
+    public Map<Product, List<Transaction>> findAllByProduct() {
+        return transactionRepository.findAll().stream()
+                .collect(Collectors.groupingBy(Transaction::getProduct));
+    }
+
     private LocalDateTime formatDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         LocalDateTime qTime = LocalDateTime.parse(date, formatter);
         return qTime;
+    }
+
+    public Set<TransactionType> findAllTransactionTypes() {
+        return transactionRepository.findAll().stream()
+                .map(transaction -> transaction.getTransactionType())
+                .collect(Collectors.toSet());
     }
 }

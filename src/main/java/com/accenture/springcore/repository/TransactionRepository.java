@@ -1,21 +1,19 @@
 package com.accenture.springcore.repository;
 
 import com.accenture.springcore.model.Transaction;
-import com.accenture.springcore.model.TransactionType;
 import com.accenture.springcore.repository.base.BaseRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface TransactionRepository extends BaseRepository<Transaction, Integer> {
 
     //TODO finish it
+
     /**
      * For demonstration purposes,
+     *
      * @param id
      * @param userId
      * @param type
@@ -30,4 +28,5 @@ public interface TransactionRepository extends BaseRepository<Transaction, Integ
 //                                      LocalDateTime createdAt, boolean confirmed);
 
     List<Transaction> findAll();
+
 }

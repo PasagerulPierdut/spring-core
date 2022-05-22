@@ -1,23 +1,19 @@
 package com.accenture.springcore.model;
 
-import com.accenture.springcore.utils.validator.ValidTransaction;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TRANSACTIONS")
-@ValidTransaction
 public class Transaction extends BaseEntity {
 
     @Column(name = "USER_ID")
     private Integer userId;
-
-    @Column(name = "PRODUCT")
-    private String product;
 
     @Enumerated
     @Column(name = "TRANSACTION_TYPE")
@@ -32,17 +28,21 @@ public class Transaction extends BaseEntity {
     @Column(name = "CONFIRMED")
     private boolean confirmed;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
     public Transaction() {
     }
 
-    public Transaction(Integer userId, String product, TransactionType transactionType, double amount,
-                       LocalDateTime createdAt, boolean confirmed) {
+    public Transaction(Integer userId, TransactionType transactionType, double amount,
+                       LocalDateTime createdAt, boolean confirmed, Product product) {
         this.userId = userId;
-        this.product = product;
         this.transactionType = transactionType;
         this.amount = amount;
         this.createdAt = createdAt;
         this.confirmed = confirmed;
+        this.product = product;
     }
 
     public Integer getUserId() {
@@ -53,11 +53,11 @@ public class Transaction extends BaseEntity {
         this.userId = userId;
     }
 
-    public String getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(String product) {
+    public void setProduct(Product Product) {
         this.product = product;
     }
 
@@ -96,10 +96,15 @@ public class Transaction extends BaseEntity {
     @Override
     public String toString() {
         return "Transaction{" +
-                "product='" + product + '\'' +
+                "userId=" + userId +
+                ", product=" + product +
+                ", transactionType=" + transactionType +
+                ", amount=" + amount +
+                ", createdAt=" + createdAt +
                 ", confirmed=" + confirmed +
                 '}';
     }
 }
+
 
 
