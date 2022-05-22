@@ -1,5 +1,7 @@
 package com.accenture.springcore.model;
 
+import lombok.Builder;
+
 //TODO replace with Builder , maybe.
 public class SortCriteria {
 
@@ -7,8 +9,8 @@ public class SortCriteria {
     private Integer userId;
     private String product;
     private TransactionType transactionType;
-    private double minAmount;
-    private double maxAmount;
+    private Double minAmount;
+    private Double maxAmount;
     private String startDateTime;
     private String endDateTime;
     private boolean confirmed;
@@ -50,11 +52,11 @@ public class SortCriteria {
         return transactionType;
     }
 
-    public double getMinAmount() {
+    public Double getMinAmount() {
         return minAmount;
     }
 
-    public double getMaxAmount() {
+    public Double getMaxAmount() {
         return maxAmount;
     }
 

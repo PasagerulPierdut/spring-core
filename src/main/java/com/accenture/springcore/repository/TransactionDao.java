@@ -2,6 +2,7 @@ package com.accenture.springcore.repository;
 
 import com.accenture.springcore.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -11,22 +12,22 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class TransactionDao {
 
-    private final EntityManager entityManager;
+    private EntityManager entityManager;
 
+    @Autowired
     public TransactionDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-   public List<Transaction> findAllByCriteria(Integer id, Integer userId, String product,
-                                        TransactionType transactionType, double minAmount, double maxAmount,
-                                        LocalDateTime startDateTime, LocalDateTime endDateTime, Boolean confirmed) {
+    public List<Transaction> findAllByCriteria(Integer id, Integer userId, String product,
+                                               TransactionType transactionType, Double minAmount, Double maxAmount,
+                                               LocalDateTime startTime, LocalDateTime endTime, Boolean confirmed) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Transaction> criteriaQuery = criteriaBuilder.createQuery(Transaction.class);
@@ -46,17 +47,17 @@ public class TransactionDao {
 
             predicates.add(criteriaBuilder.equal(origin.get("transactionType"), transactionType));
         }
-        if ((Double)minAmount != null && minAmount > 0) {
+        if (minAmount != null && minAmount.doubleValue() > 0.0) {
             predicates.add(criteriaBuilder.greaterThan(origin.get("amount"), minAmount));
         }
-        if((Double)maxAmount != null && maxAmount > 0) {
+        if (maxAmount != null && maxAmount.doubleValue() > 0.0) {
             predicates.add(criteriaBuilder.lessThan(origin.get("amount"), maxAmount));
         }
-        if ((startDateTime != null && endDateTime == null) && startDateTime.isBefore(LocalDateTime.now()))  {
-            predicates.add(criteriaBuilder.between(origin.get("createdAt"), startDateTime, LocalDateTime.now()));
+        if ((startTime != null) && (endTime == null) && (startTime.isBefore(LocalDateTime.now()))) {
+            predicates.add(criteriaBuilder.between(origin.get("createdAt"), startTime, LocalDateTime.now()));
         }
-        if((startDateTime != null) && (endDateTime != null) && (endDateTime.isAfter(startDateTime))) {
-            predicates.add(criteriaBuilder.between(origin.get("createdAt"), startDateTime, endDateTime));
+        if ((startTime != null) && (endTime != null) && (endTime.isAfter(startTime))) {
+            predicates.add(criteriaBuilder.between(origin.get("createdAt"), startTime, endTime));
         }
         if (confirmed != null) {
             predicates.add(criteriaBuilder.equal(origin.get("confirmed"), confirmed));
@@ -66,7 +67,8 @@ public class TransactionDao {
         predicates.toArray(searchParams);
         criteriaQuery.where(searchParams);
 
-         TypedQuery<Transaction> q = entityManager.createQuery(criteriaQuery);
+        TypedQuery<Transaction> q = entityManager.createQuery(criteriaQuery);
         return q.getResultList();
     }
 }
+

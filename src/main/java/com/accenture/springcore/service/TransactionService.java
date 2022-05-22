@@ -2,7 +2,7 @@ package com.accenture.springcore.service;
 
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
 import com.accenture.springcore.model.Transaction;
-import com.accenture.springcore.model.SortCriteria;
+import com.accenture.springcore.model.TransactionType;
 import com.accenture.springcore.repository.TransactionDao;
 import com.accenture.springcore.repository.TransactionRepository;
 import com.accenture.springcore.repository.base.BaseService;
@@ -30,11 +30,19 @@ public class TransactionService extends BaseService<Transaction, Integer> {
         this.transactionDao = transactionDao;
     }
 
-    public List<Transaction> findAll(SortCriteria sortCriteria) {
-        return transactionDao.findAllByCriteria(sortCriteria.getId(), sortCriteria.getUserId(),
-                sortCriteria.getProduct(), sortCriteria.getTransactionType(),
-                (Double)sortCriteria.getMinAmount(), (Double) sortCriteria.getMaxAmount(),
-                formatDate(sortCriteria.getStartDateTime()), formatDate(sortCriteria.getEndDateTime()), sortCriteria.isConfirmed());
+    public List<Transaction> findAll(Integer id, Integer userId, String product, TransactionType transactionType,
+                                     Double minAmount, Double maxAmount, String startDateTime, String endDateTime,
+                                     boolean confirmed) {
+        LocalDateTime startTime = null;
+        LocalDateTime endTime  = null;
+        if(startDateTime != null) {
+            startTime = formatDate(startDateTime);
+        }
+        if(endDateTime != null) {
+            endTime = formatDate(endDateTime);
+        }
+        return transactionDao.findAllByCriteria(id, userId, product, transactionType, minAmount,
+                maxAmount, startTime, endTime, confirmed);
     }
 
     public Transaction getOneById(Integer id) {
@@ -57,8 +65,8 @@ public class TransactionService extends BaseService<Transaction, Integer> {
     }
 
     public void deleteTransaction(Integer id) {
-transactionRepository.findById(id).ifPresentOrElse(
-        transaction -> transactionRepository.deleteById(transaction.getId()),NoSuchElementException::new);
+        transactionRepository.findById(id).ifPresentOrElse(
+                transaction -> transactionRepository.deleteById(transaction.getId()), NoSuchElementException::new);
     }
 
     public List<Transaction> getAllConfirmedTransactions() {
@@ -78,12 +86,8 @@ transactionRepository.findById(id).ifPresentOrElse(
     }
 
     private LocalDateTime formatDate(String date) {
-        if (date == null) {
-            return LocalDateTime.now();
-        } else {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-            LocalDateTime qTime = LocalDateTime.parse(date, formatter);
-            return qTime;
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        LocalDateTime qTime = LocalDateTime.parse(date, formatter);
+        return qTime;
     }
 }
