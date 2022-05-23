@@ -56,9 +56,6 @@ public class TransactionDao {
         if ((startTime != null) && (endTime != null) && (endTime.isAfter(startTime))) {
             predicates.add(criteriaBuilder.between(origin.get("createdAt"), startTime, endTime));
         }
-        if (confirmed != null) {
-            predicates.add(criteriaBuilder.equal(origin.get("confirmed"), confirmed));
-        }
         Predicate[] searchParams = new Predicate[predicates.size()];
         predicates.toArray(searchParams);
         criteriaQuery.where(searchParams);

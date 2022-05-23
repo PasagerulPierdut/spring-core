@@ -2,6 +2,7 @@ package com.accenture.springcore.controller;
 
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
 import com.accenture.springcore.model.Product;
+import com.accenture.springcore.model.Dto.SortCriteriaInfo;
 import com.accenture.springcore.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
 import com.accenture.springcore.service.TransactionService;
@@ -43,10 +44,16 @@ public class TransactionController {
             @RequestParam(name = "maxAmount", required = false) Double maxAmount,
             @RequestParam(name = "startDateTime", required = false) String startDateTime,
             @RequestParam(name = "endDateTime", required = false) String endDateTime,
-            @RequestParam(name = "confirmed", required = false) boolean confirmed
+            @RequestParam(name = "confirmed", required = false) boolean confirmed,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "5") Integer pageSize,
+            @RequestParam(defaultValue = "createdAt") String sortBy
+//          SortCriteriaInfo sortCriteriaInfo
     ) {
-        return new ResponseEntity<>(transactionService.findAll(id, userId, transactionType,
-                minAmount, maxAmount, startDateTime, endDateTime, confirmed), HttpStatus.OK);
+        return new ResponseEntity<>(transactionService.findAll(
+//                sortCriteriaInfo
+                id, userId, transactionType, minAmount, maxAmount, startDateTime, endDateTime,  pageNo, pageSize, sortBy
+        ), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

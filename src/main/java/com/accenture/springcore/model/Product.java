@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +18,11 @@ import java.util.List;
 public class Product extends BaseEntity {
 
     @Column(name = "NAME")
+    @NotBlank(message = "Product name is missing.")
     private String name;
 
     @Column(name = "DESCRIPTION")
+    @Size(min = 5, message = "Minimum 5 characters are required..")
     private String description;
 
     @Column(name = "CREATED")
@@ -75,11 +79,11 @@ public class Product extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Product{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
+        return "Product " +
+                ", name: " + name + '\'' +
+                ", description:'" + description + '\'' +
+                ", createdAt: " + createdAt +
+                ", modifiedAt: " + modifiedAt +
                 '}';
     }
 }

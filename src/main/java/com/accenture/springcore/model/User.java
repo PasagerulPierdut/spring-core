@@ -6,6 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
@@ -13,9 +14,11 @@ import java.util.Set;
 public class User extends BaseEntity {
 
     @Column(name = "USERNAME")
+    @NotBlank(message = "User name required.")
     private String userName;
 
     @Column(name = "PASSWORD")
+    @NotBlank
     private String password;
 
     @ManyToMany

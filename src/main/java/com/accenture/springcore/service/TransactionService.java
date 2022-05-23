@@ -2,13 +2,16 @@ package com.accenture.springcore.service;
 
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
 import com.accenture.springcore.model.Product;
+import com.accenture.springcore.model.Dto.SortCriteriaInfo;
 import com.accenture.springcore.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
-import com.accenture.springcore.repository.TransactionDao;
 import com.accenture.springcore.repository.TransactionRepository;
 import com.accenture.springcore.repository.base.BaseService;
 import com.accenture.springcore.utils.validator.ValidTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,7 +19,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
@@ -24,33 +26,59 @@ import static java.lang.Boolean.TRUE;
 @Service
 public class TransactionService extends BaseService<Transaction, Integer> {
 
-    private TransactionRepository transactionRepository;
-
-    private TransactionDao transactionDao;
+    private final TransactionRepository transactionRepository;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, TransactionDao transactionDao) {
+    public TransactionService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
-        this.transactionDao = transactionDao;
     }
 
     public List<Transaction> findAll() {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> findAll(Integer id, Integer userId, TransactionType transactionType,
-                                     Double minAmount, Double maxAmount, String startDateTime, String endDateTime,
-                                     boolean confirmed) {
-        LocalDateTime startTime = null;
-        LocalDateTime endTime = null;
-        if (startDateTime != null) {
-            startTime = formatDate(startDateTime);
+    public List<Transaction> findAll(Integer id, Integer userId, TransactionType transactionType, Double minAmount, Double maxAmount, String startTime, String endTime, Integer pageNo, Integer pageSize, String sortBy) {
+        LocalDateTime startDateTime = null;
+        LocalDateTime endDateTime = null;
+        if(startTime == null) {
+            startDateTime = formatDate(startTime);
         }
-        if (endDateTime != null) {
-            endTime = formatDate(endDateTime);
+        if(endTime == null) {
+            endDateTime = formatDate(endTime);
         }
-        return transactionDao.findAllByCriteria(id, userId, transactionType, minAmount,
-                maxAmount, startTime, endTime, confirmed);
+        if(pageNo == null) {
+            pageNo = 0;
+        }
+        if(pageSize == null) {
+            pageSize = 5;
+        }
+        if(sortBy == null) {
+            sortBy = "createdAt";
+        }
+//        if (sortCriteriaInfo.getStartTime() != null) {
+//            startDateTime = formatDate(sortCriteriaInfo.getStartTime());
+//        }
+//        if (sortCriteriaInfo.getEndTime() != null) {
+//            endDateTime = formatDate(sortCriteriaInfo.getEndTime());
+//        }
+//        if (sortCriteriaInfo.getPageNo() == null) {
+//            sortCriteriaInfo.setPageNo(0);
+//        }
+//        if (sortCriteriaInfo.getPageSize() == null) {
+//            sortCriteriaInfo.setPageSize(5);
+//        }
+//        if (sortCriteriaInfo.getSortBy() == null) {
+//            sortCriteriaInfo.setSortBy("createdAt");
+//        }
+
+//        Pageable paging = PageRequest.of(sortCriteriaInfo.getPageNo(), sortCriteriaInfo.getPageSize(),
+//                Sort.Direction.ASC, sortCriteriaInfo.getSortBy());
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.Direction.ASC, sortBy);
+//        return transactionRepository.findAll(sortCriteriaInfo.getId(), sortCriteriaInfo.getUserId(),
+//                sortCriteriaInfo.getTransactionType(), sortCriteriaInfo.getMaxAmount(),
+//                sortCriteriaInfo.getMinAmount(), startDateTime, endDateTime, paging);
+        return transactionRepository.findAll(id, userId,transactionType, minAmount, maxAmount,
+                startDateTime, endDateTime, paging);
     }
 
     public Transaction getOneById(Integer id) {
@@ -106,13 +134,6 @@ public class TransactionService extends BaseService<Transaction, Integer> {
 
     private LocalDateTime formatDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-        LocalDateTime qTime = LocalDateTime.parse(date, formatter);
-        return qTime;
-    }
-
-    public Set<TransactionType> findAllTransactionTypes() {
-        return transactionRepository.findAll().stream()
-                .map(transaction -> transaction.getTransactionType())
-                .collect(Collectors.toSet());
+        return LocalDateTime.parse(date, formatter);
     }
 }

@@ -6,6 +6,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 public class Transaction extends BaseEntity {
 
     @Column(name = "USER_ID")
+    @NotNull(message = "Null fields not allowed.")
     private Integer userId;
 
     @Enumerated
@@ -20,6 +23,8 @@ public class Transaction extends BaseEntity {
     private TransactionType transactionType;
 
     @Column(name = "AMOUNT")
+    @NotNull
+    @Positive(message = "The amount should exceed zero values.")
     private double amount;
 
     @Column(name = "CREATED")
@@ -97,14 +102,15 @@ public class Transaction extends BaseEntity {
     public String toString() {
         return "Transaction{" +
                 "userId=" + userId +
-                ", product=" + product +
                 ", transactionType=" + transactionType +
                 ", amount=" + amount +
                 ", createdAt=" + createdAt +
                 ", confirmed=" + confirmed +
+                ", product=" + product +
                 '}';
     }
 }
+
 
 
 
