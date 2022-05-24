@@ -36,22 +36,21 @@ public class TransactionController {
 
     @GetMapping
     public ResponseEntity<List<Transaction>> findAll(
-            @RequestParam(name = "id", required = false) Integer id,
-            @RequestParam(name = "userId", required = false) Integer userId,
-            @RequestParam(name = "transactionType", required = false) TransactionType transactionType,
-            @RequestParam(name = "minAmount", required = false) Double minAmount,
-            @RequestParam(name = "maxAmount", required = false) Double maxAmount,
-            @RequestParam(name = "startDateTime", required = false) String startDateTime,
-            @RequestParam(name = "endDateTime", required = false) String endDateTime,
-            @RequestParam(name = "confirmed", required = false) boolean confirmed,
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "5") Integer pageSize,
-            @RequestParam(defaultValue = "createdAt") String sortBy
-//          SortCriteriaInfo sortCriteriaInfo
+//            @RequestParam(name = "id", required = false) Integer id,
+//            @RequestParam(name = "userId", required = false) Integer userId,
+//            @RequestParam(name = "transactionType", required = false) TransactionType transactionType,
+//            @RequestParam(name = "minAmount", required = false) Double minAmount,
+//            @RequestParam(name = "maxAmount", required = false) Double maxAmount,
+//            @RequestParam(name = "startDateTime", required = false) String startDateTime,
+//            @RequestParam(name = "endDateTime", required = false) String endDateTime,
+//            @RequestParam(name = "confirmed", required = false) boolean confirmed,
+//            @RequestParam(defaultValue = "0") Integer pageNo,
+//            @RequestParam(defaultValue = "5") Integer pageSize,
+//            @RequestParam(defaultValue = "createdAt") String sortBy
+          SortCriteriaInfo sortCriteriaInfo
     ) {
-        return new ResponseEntity<>(transactionService.findAll(
-//                sortCriteriaInfo
-                id, userId, transactionType, minAmount, maxAmount, startDateTime, endDateTime, pageNo, pageSize, sortBy
+        return new ResponseEntity<>(transactionService.findAll(sortCriteriaInfo
+//                id, userId, transactionType, minAmount, maxAmount, startDateTime, endDateTime, pageNo, pageSize, sortBy
         ), HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package com.accenture.springcore.service;
 
+import com.accenture.springcore.controller.SortCriteriaInfo;
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
 import com.accenture.springcore.model.Product;
 import com.accenture.springcore.model.Transaction;
@@ -35,48 +36,52 @@ public class TransactionService extends BaseService<Transaction, Integer> {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> findAll(Integer id, Integer userId, TransactionType transactionType, Double minAmount, Double maxAmount, String startTime, String endTime, Integer pageNo, Integer pageSize, String sortBy) {
+    public List<Transaction> findAll(
+            SortCriteriaInfo sortCriteriaInfo
+//            Integer id, Integer userId, TransactionType transactionType, Double minAmount, Double maxAmount, String startTime, String endTime, Integer pageNo, Integer pageSize, String sortBy
+    ) {
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
-        if(startTime != null) {
-            startDateTime = formatDate(startTime);
-        }
-        if(endTime != null) {
-            endDateTime = formatDate(endTime);
-        }
-        if(pageNo == null) {
-            pageNo = 0;
-        }
-        if(pageSize == null) {
-            pageSize = 5;
-        }
-        if(sortBy == null) {
-            sortBy = "createdAt";
-        }
-//        if (sortCriteriaInfo.getStartTime() != null) {
-//            startDateTime = formatDate(sortCriteriaInfo.getStartTime());
+//        if (startTime != null) {
+//            startDateTime = formatDate(startTime);
 //        }
-//        if (sortCriteriaInfo.getEndTime() != null) {
-//            endDateTime = formatDate(sortCriteriaInfo.getEndTime());
+//        if (endTime != null) {
+//            endDateTime = formatDate(endTime);
 //        }
-//        if (sortCriteriaInfo.getPageNo() == null) {
-//            sortCriteriaInfo.setPageNo(0);
+//        if (pageNo == null) {
+//            pageNo = 0;
 //        }
-//        if (sortCriteriaInfo.getPageSize() == null) {
-//            sortCriteriaInfo.setPageSize(5);
+//        if (pageSize == null) {
+//            pageSize = 5;
 //        }
-//        if (sortCriteriaInfo.getSortBy() == null) {
-//            sortCriteriaInfo.setSortBy("createdAt");
+//        if (sortBy == null) {
+//            sortBy = "createdAt";
 //        }
+        if (sortCriteriaInfo.getStartTime() != null) {
+            startDateTime = formatDate(sortCriteriaInfo.getStartTime());
+        }
+        if (sortCriteriaInfo.getEndTime() != null) {
+            endDateTime = formatDate(sortCriteriaInfo.getEndTime());
+        }
+        if (sortCriteriaInfo.getPageNo() == null) {
+            sortCriteriaInfo.setPageNo(0);
+        }
+        if (sortCriteriaInfo.getPageSize() == null) {
+            sortCriteriaInfo.setPageSize(5);
+        }
+        if (sortCriteriaInfo.getSortBy() == null) {
+            sortCriteriaInfo.setSortBy("createdAt");
+        }
 
-//        Pageable paging = PageRequest.of(sortCriteriaInfo.getPageNo(), sortCriteriaInfo.getPageSize(),
-//                Sort.Direction.ASC, sortCriteriaInfo.getSortBy());
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.Direction.ASC, sortBy);
-//        return transactionRepository.findAll(sortCriteriaInfo.getId(), sortCriteriaInfo.getUserId(),
-//                sortCriteriaInfo.getTransactionType(), sortCriteriaInfo.getMaxAmount(),
-//                sortCriteriaInfo.getMinAmount(), startDateTime, endDateTime, paging);
-        return transactionRepository.findAll(id, userId,transactionType, minAmount, maxAmount,
-                startDateTime, endDateTime, paging);
+        Pageable paging = PageRequest.of(sortCriteriaInfo.getPageNo(), sortCriteriaInfo.getPageSize(),
+                Sort.Direction.ASC, sortCriteriaInfo.getSortBy());
+        return transactionRepository.findAll(sortCriteriaInfo.getId(), sortCriteriaInfo.getUserId(),
+                sortCriteriaInfo.getTransactionType(), sortCriteriaInfo.getMaxAmount(),
+                sortCriteriaInfo.getMinAmount(), startDateTime, endDateTime, paging);
+
+//        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.Direction.ASC, sortBy);
+//        return transactionRepository.findAll(id, userId, transactionType, minAmount, maxAmount,
+//                startDateTime, endDateTime, paging);
     }
 
     public Transaction getOneById(Integer id) {

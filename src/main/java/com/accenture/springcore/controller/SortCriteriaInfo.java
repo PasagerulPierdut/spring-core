@@ -1,9 +1,7 @@
-package com.accenture.springcore.model.Dto;
+package com.accenture.springcore.controller;
 
 import com.accenture.springcore.model.TransactionType;
-import lombok.Builder;
 
-@Builder
 public class SortCriteriaInfo {
 
     private Integer id;
@@ -13,7 +11,6 @@ public class SortCriteriaInfo {
     private Double maxAmount;
     private String startTime;
     private String endTime;
-    private boolean confirmed;
     private Integer pageNo;
     private Integer pageSize;
     private String sortBy;
@@ -21,7 +18,7 @@ public class SortCriteriaInfo {
     public SortCriteriaInfo() {
     }
 
-    public SortCriteriaInfo(Integer id, Integer userId, TransactionType transactionType, Double minAmount, Double maxAmount, String startTime, String endTime, boolean confirmed, Integer pageNo, Integer pageSize, String sortBy) {
+    public SortCriteriaInfo(Integer id, Integer userId, TransactionType transactionType, Double minAmount, Double maxAmount, String startTime, String endTime, Integer pageNo, Integer pageSize, String sortBy) {
         this.id = id;
         this.userId = userId;
         this.transactionType = transactionType;
@@ -29,7 +26,6 @@ public class SortCriteriaInfo {
         this.maxAmount = maxAmount;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.confirmed = confirmed;
         this.pageNo = pageNo;
         this.pageSize = pageSize;
         this.sortBy = sortBy;
@@ -39,52 +35,76 @@ public class SortCriteriaInfo {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getUserId() {
         return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public TransactionType getTransactionType() {
         return transactionType;
     }
 
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
     public Double getMinAmount() {
         return minAmount;
+    }
+
+    public void setMinAmount(Double minAmount) {
+        this.minAmount = minAmount;
     }
 
     public Double getMaxAmount() {
         return maxAmount;
     }
 
+    public void setMaxAmount(Double maxAmount) {
+        this.maxAmount = maxAmount;
+    }
+
     public String getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
     public String getEndTime() {
         return endTime;
     }
 
-    public boolean isConfirmed() {
-        return confirmed;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public Integer getPageNo() {
         return pageNo;
     }
 
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public String getSortBy() {
-        return sortBy;
-    }
-
     public void setPageNo(Integer pageNo) {
         this.pageNo = pageNo;
     }
 
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public String getSortBy() {
+        return sortBy;
     }
 
     public void setSortBy(String sortBy) {
