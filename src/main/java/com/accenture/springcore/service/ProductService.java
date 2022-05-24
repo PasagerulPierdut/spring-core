@@ -3,7 +3,6 @@ package com.accenture.springcore.service;
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
 import com.accenture.springcore.model.Product;
 import com.accenture.springcore.repository.ProductRepository;
-import com.accenture.springcore.repository.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

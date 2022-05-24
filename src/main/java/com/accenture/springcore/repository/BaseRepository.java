@@ -1,4 +1,4 @@
-package com.accenture.springcore.repository.base;
+package com.accenture.springcore.repository;
 
 import com.accenture.springcore.model.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

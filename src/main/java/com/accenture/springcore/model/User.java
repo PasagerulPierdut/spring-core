@@ -1,5 +1,7 @@
 package com.accenture.springcore.model;
 
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -15,7 +17,7 @@ public class User extends BaseEntity {
 
     @Column(name = "USERNAME")
     @NotBlank(message = "User name required.")
-    private String userName;
+    private String username;
 
     @Column(name = "PASSWORD")
     @NotBlank
@@ -31,18 +33,18 @@ public class User extends BaseEntity {
     public User() {
     }
 
-    public User(String userName, String password, Set<Role> roles) {
-        this.userName = userName;
+    public User(String username, String password, Set<Role> roles) {
+        this.username = username;
         this.password = password;
         this.roles = roles;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -64,9 +66,8 @@ public class User extends BaseEntity {
     @Override
     public String toString() {
         return "User{" +
-                ", userName='" + userName + '\'' +
+                "username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + roles +
                 '}';
     }
 }

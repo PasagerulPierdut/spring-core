@@ -1,6 +1,7 @@
-package com.accenture.springcore.repository.base;
+package com.accenture.springcore.service;
 
 import com.accenture.springcore.model.BaseEntity;
+import com.accenture.springcore.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityExistsException;

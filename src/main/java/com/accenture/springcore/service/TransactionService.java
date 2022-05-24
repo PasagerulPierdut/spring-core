@@ -2,11 +2,9 @@ package com.accenture.springcore.service;
 
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
 import com.accenture.springcore.model.Product;
-import com.accenture.springcore.model.Dto.SortCriteriaInfo;
 import com.accenture.springcore.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
 import com.accenture.springcore.repository.TransactionRepository;
-import com.accenture.springcore.repository.base.BaseService;
 import com.accenture.springcore.utils.validator.ValidTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -40,10 +38,10 @@ public class TransactionService extends BaseService<Transaction, Integer> {
     public List<Transaction> findAll(Integer id, Integer userId, TransactionType transactionType, Double minAmount, Double maxAmount, String startTime, String endTime, Integer pageNo, Integer pageSize, String sortBy) {
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
-        if(startTime == null) {
+        if(startTime != null) {
             startDateTime = formatDate(startTime);
         }
-        if(endTime == null) {
+        if(endTime != null) {
             endDateTime = formatDate(endTime);
         }
         if(pageNo == null) {

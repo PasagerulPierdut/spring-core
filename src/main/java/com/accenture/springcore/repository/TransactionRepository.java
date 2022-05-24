@@ -2,7 +2,6 @@ package com.accenture.springcore.repository;
 
 import com.accenture.springcore.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
-import com.accenture.springcore.repository.base.BaseRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

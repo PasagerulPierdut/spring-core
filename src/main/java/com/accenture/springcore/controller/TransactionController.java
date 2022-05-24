@@ -2,7 +2,6 @@ package com.accenture.springcore.controller;
 
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
 import com.accenture.springcore.model.Product;
-import com.accenture.springcore.model.Dto.SortCriteriaInfo;
 import com.accenture.springcore.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
 import com.accenture.springcore.service.TransactionService;
@@ -52,7 +51,7 @@ public class TransactionController {
     ) {
         return new ResponseEntity<>(transactionService.findAll(
 //                sortCriteriaInfo
-                id, userId, transactionType, minAmount, maxAmount, startDateTime, endDateTime,  pageNo, pageSize, sortBy
+                id, userId, transactionType, minAmount, maxAmount, startDateTime, endDateTime, pageNo, pageSize, sortBy
         ), HttpStatus.OK);
     }
 
