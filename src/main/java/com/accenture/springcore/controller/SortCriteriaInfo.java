@@ -2,6 +2,8 @@ package com.accenture.springcore.controller;
 
 import com.accenture.springcore.model.TransactionType;
 
+import javax.validation.constraints.Min;
+
 public class SortCriteriaInfo {
 
     private Integer id;
@@ -16,6 +18,11 @@ public class SortCriteriaInfo {
     private String sortBy;
 
     public SortCriteriaInfo() {
+    }
+
+    public SortCriteriaInfo(Integer id, Integer userId) {
+        this.id = id;
+        this.userId = userId;
     }
 
     public SortCriteriaInfo(Integer id, Integer userId, TransactionType transactionType, Double minAmount, Double maxAmount, String startTime, String endTime, Integer pageNo, Integer pageSize, String sortBy) {
@@ -109,5 +116,21 @@ public class SortCriteriaInfo {
 
     public void setSortBy(String sortBy) {
         this.sortBy = sortBy;
+    }
+
+    @Override
+    public String toString() {
+        return "SortCriteriaInfo{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", transactionType=" + transactionType +
+                ", minAmount=" + minAmount +
+                ", maxAmount=" + maxAmount +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", pageNo=" + pageNo +
+                ", pageSize=" + pageSize +
+                ", sortBy='" + sortBy + '\'' +
+                '}';
     }
 }

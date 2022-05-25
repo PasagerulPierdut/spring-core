@@ -36,27 +36,10 @@ public class TransactionService extends BaseService<Transaction, Integer> {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> findAll(
-            SortCriteriaInfo sortCriteriaInfo
-//            Integer id, Integer userId, TransactionType transactionType, Double minAmount, Double maxAmount, String startTime, String endTime, Integer pageNo, Integer pageSize, String sortBy
-    ) {
+    public List<Transaction> findAll(SortCriteriaInfo sortCriteriaInfo) {
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
-//        if (startTime != null) {
-//            startDateTime = formatDate(startTime);
-//        }
-//        if (endTime != null) {
-//            endDateTime = formatDate(endTime);
-//        }
-//        if (pageNo == null) {
-//            pageNo = 0;
-//        }
-//        if (pageSize == null) {
-//            pageSize = 5;
-//        }
-//        if (sortBy == null) {
-//            sortBy = "createdAt";
-//        }
+
         if (sortCriteriaInfo.getStartTime() != null) {
             startDateTime = formatDate(sortCriteriaInfo.getStartTime());
         }
@@ -72,16 +55,11 @@ public class TransactionService extends BaseService<Transaction, Integer> {
         if (sortCriteriaInfo.getSortBy() == null) {
             sortCriteriaInfo.setSortBy("createdAt");
         }
-
         Pageable paging = PageRequest.of(sortCriteriaInfo.getPageNo(), sortCriteriaInfo.getPageSize(),
                 Sort.Direction.ASC, sortCriteriaInfo.getSortBy());
         return transactionRepository.findAll(sortCriteriaInfo.getId(), sortCriteriaInfo.getUserId(),
                 sortCriteriaInfo.getTransactionType(), sortCriteriaInfo.getMaxAmount(),
                 sortCriteriaInfo.getMinAmount(), startDateTime, endDateTime, paging);
-
-//        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.Direction.ASC, sortBy);
-//        return transactionRepository.findAll(id, userId, transactionType, minAmount, maxAmount,
-//                startDateTime, endDateTime, paging);
     }
 
     public Transaction getOneById(Integer id) {

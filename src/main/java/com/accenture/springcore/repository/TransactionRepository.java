@@ -13,8 +13,6 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends BaseRepository<Transaction, Integer> {
 
-    //TODO finish it
-
     @Query("SELECT t FROM Transaction t " +
             "WHERE" +
             " (:id IS NULL OR t.id = :id) AND (:userId IS NULL OR t.userId = :userId) " +
