@@ -1,10 +1,10 @@
 package com.accenture.springcore.service;
 
+import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
 import com.accenture.springcore.model.BaseEntity;
 import com.accenture.springcore.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityExistsException;
 import java.util.List;
 
 public abstract class BaseService<T extends BaseEntity, ID> {
@@ -21,6 +21,6 @@ public abstract class BaseService<T extends BaseEntity, ID> {
     }
 
     public T findById(ID id) {
-        return repository.findById(id).orElseThrow(EntityExistsException::new);
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("The specified ID is not in database."));
     }
 }

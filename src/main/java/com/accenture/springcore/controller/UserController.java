@@ -4,6 +4,7 @@ import com.accenture.springcore.model.User;
 import com.accenture.springcore.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +16,11 @@ public class UserController {
 
     private UserService userService;
 
-    public UserController(UserService userService) {
+    private final JmsTemplate jmsTemplate;
+
+    public UserController(UserService userService, JmsTemplate jmsTemplate) {
         this.userService = userService;
+        this.jmsTemplate = jmsTemplate;
     }
 
     @PostMapping

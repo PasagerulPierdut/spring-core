@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
@@ -25,7 +26,7 @@ import static java.lang.Boolean.TRUE;
 @Service
 public class TransactionService extends BaseService<Transaction, Integer> {
 
-    private final TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;
 
     @Autowired
     public TransactionService(TransactionRepository transactionRepository) {
@@ -62,10 +63,13 @@ public class TransactionService extends BaseService<Transaction, Integer> {
                 sortCriteriaInfo.getMinAmount(), startDateTime, endDateTime, paging);
     }
 
-    public Transaction getOneById(Integer id) {
-        return transactionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("The transaction with the specified ID doesn't exist."));
+    public Transaction getOneById(Integer id) throws EntityNotFoundException {
+        Optional<Transaction> opt = transactionRepository.findById(id);
+        if (opt.isPresent()) {
+            return opt.get();
+        }
+        throw new EntityNotFoundException
+                ("The transaction with the specified ID doesn't exist.");
     }
 
     public Transaction addNew(@ValidTransaction Transaction transaction) {

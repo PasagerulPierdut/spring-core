@@ -5,6 +5,7 @@ import com.accenture.springcore.exception.customExceptions.EntityNotFoundExcepti
 import com.accenture.springcore.exception.customExceptions.NotAuthenticatedException;
 import com.accenture.springcore.exception.customExceptions.NotAuthorizedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.jms.listener.adapter.ListenerExecutionFailedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -55,6 +56,12 @@ public class RestExceptionHandler {
     @ExceptionHandler(ServerErrorException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionResponse handleException(ServerErrorException exception) {
+        return new ExceptionResponse(exception.getMessage(), exception.getClass().getSimpleName());
+    }
+
+@ExceptionHandler(ListenerExecutionFailedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionResponse handleException(ListenerExecutionFailedException exception) {
         return new ExceptionResponse(exception.getMessage(), exception.getClass().getSimpleName());
     }
 }
