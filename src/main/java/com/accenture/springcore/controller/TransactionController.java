@@ -1,10 +1,12 @@
 package com.accenture.springcore.controller;
 
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
-import com.accenture.springcore.model.Product;
-import com.accenture.springcore.model.Transaction;
+import com.accenture.model.Product;
+import com.accenture.model.Transaction;
+import com.accenture.springcore.model.Dto.SortCriteriaInfo;
 import com.accenture.springcore.model.TransactionType;
 import com.accenture.springcore.service.TransactionService;
+import com.accenture.springcore.utils.validator.ValidTransaction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
@@ -50,13 +52,15 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Transaction> addNewTransaction(
-            @RequestBody Transaction transaction) {
+            @RequestBody @ValidTransaction Transaction transaction) {
+        jmsTemplate.convertAndSend("TransactionQueue", transaction);
+        System.out.println("sending a transaction");
         return new ResponseEntity<>(transactionService.addNew(transaction), CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Transaction> replaceTransaction(
-            @PathVariable("id") Integer id, @RequestBody Transaction transaction)
+            @PathVariable("id") Integer id, @RequestBody @ValidTransaction Transaction transaction)
             throws EntityNotFoundException {
         return new ResponseEntity<>(transactionService.replaceTransaction(id, transaction), OK);
     }
@@ -75,11 +79,5 @@ public class TransactionController {
     @GetMapping("/reports/product")
     public ResponseEntity<Map<Product, List<Transaction>>> getAllTransactionOfProduct() {
         return new ResponseEntity<>(transactionService.findAllByProduct(), HttpStatus.OK);
-    }
-
-    @PostMapping("/broadcaster")
-    public void broadcastNewTransaction(@RequestBody Transaction transaction) {
-        System.out.println("sending a transaction");
-        jmsTemplate.convertAndSend("TransactionQueue", transaction);
     }
 }

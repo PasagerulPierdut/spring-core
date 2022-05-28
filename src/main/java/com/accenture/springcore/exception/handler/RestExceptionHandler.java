@@ -64,4 +64,10 @@ public class RestExceptionHandler {
     public ExceptionResponse handleException(ListenerExecutionFailedException exception) {
         return new ExceptionResponse(exception.getMessage(), exception.getClass().getSimpleName());
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    public ExceptionResponse handleException(Exception exception) {
+        return new ExceptionResponse(exception.getMessage(), exception.getClass().getSimpleName());
+    }
 }

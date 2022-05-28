@@ -1,7 +1,7 @@
-package com.accenture.springcore.model;
+package com.accenture.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.accenture.model.Transaction;
+import com.accenture.springcore.model.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,13 +11,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "PRODUCTS")
-public class Product extends BaseEntity  {
+@Table(name = "products")
+public class Product extends BaseEntity {
 
     @Column(name = "NAME")
     @NotBlank(message = "Product name is missing.")

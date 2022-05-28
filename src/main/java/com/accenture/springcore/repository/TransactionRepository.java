@@ -1,6 +1,6 @@
 package com.accenture.springcore.repository;
 
-import com.accenture.springcore.model.Transaction;
+import com.accenture.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +27,7 @@ public interface TransactionRepository extends BaseRepository<Transaction, Integ
                               @Param("startDateTime") LocalDateTime startDateTime,
                               @Param("endDateTime") LocalDateTime endDateTime,
                               Pageable paging);
+
+@Query("SELECT t FROM Transaction t WHERE t.confirmed = 'true'")
+List<Transaction> findAllByConfirmationStatus();
 }

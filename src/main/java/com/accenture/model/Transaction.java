@@ -1,24 +1,20 @@
-package com.accenture.springcore.model;
+package com.accenture.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.springframework.jms.core.JmsTemplate;
+import com.accenture.springcore.model.BaseEntity;
+import com.accenture.springcore.model.TransactionType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "TRANSACTIONS")
+@Table(name = "transactions")
 public class Transaction extends BaseEntity {
 
     @Column(name = "USER_ID")

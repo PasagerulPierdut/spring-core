@@ -1,7 +1,5 @@
 package com.accenture.springcore.model;
 
-import lombok.ToString;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Column(name = "USERNAME")

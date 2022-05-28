@@ -1,6 +1,6 @@
 package com.accenture.springcore.jms;
 
-import com.accenture.springcore.model.Transaction;
+import com.accenture.model.Transaction;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 

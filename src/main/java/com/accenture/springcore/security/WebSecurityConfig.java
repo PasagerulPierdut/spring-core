@@ -28,9 +28,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 authorizeRequests()
-
-                .antMatchers(HttpMethod.PUT, "/transactions/").hasRole("ADMIN")
                 .antMatchers("/transactions/").authenticated()
+                .antMatchers(HttpMethod.POST, "/transactions").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/transactions").hasRole("ADMIN")
+
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic()

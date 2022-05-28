@@ -1,6 +1,6 @@
 package com.accenture.springcore.repository;
 
-import com.accenture.springcore.model.Product;
+import com.accenture.model.Product;
 import org.springframework.stereotype.Repository;
 
 @Repository

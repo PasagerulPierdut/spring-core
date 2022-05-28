@@ -1,10 +1,10 @@
 package com.accenture.springcore;
 
-import com.accenture.springcore.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.EnableJms;
@@ -16,9 +16,9 @@ import org.springframework.jms.support.converter.MessageType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.jms.ConnectionFactory;
-import java.util.HashMap;
 
 @SpringBootApplication
+@EntityScan(basePackages = "com.accenture.*")
 @EnableScheduling
 @EnableJms
 public class SpringCoreApplication {
@@ -35,7 +35,7 @@ public class SpringCoreApplication {
     }
 
     @Bean
-    public MessageConverter jacksonJmsMessageConverter () {
+    public MessageConverter jacksonJmsMessageConverter() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JSR310Module());

@@ -1,6 +1,6 @@
 package com.accenture.springcore.repository;
 
-import com.accenture.springcore.model.Transaction;
+import com.accenture.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

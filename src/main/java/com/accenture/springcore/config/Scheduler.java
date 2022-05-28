@@ -11,16 +11,13 @@ public class Scheduler {
     @Autowired
     private TransactionService transactionService;
 
-    @Scheduled(cron = "0 9 1 * * ?")
+    @Scheduled(cron = "0 0 9 1 * ? ")
     public void generateMonthlyReport() {
         System.out.println(transactionService.getAllConfirmedTransactions());
     }
 
-
-    /** Initial delay set in order to avoid TransactionSystemException
-     *
-     */
-    @Scheduled(fixedRate = 60000, initialDelay = 20000)
+    // Initial delay set in order to avoid TransactionSystemException
+    @Scheduled(fixedRate = 300000, initialDelay = 20000)
     public void confirmTransactions() {
         transactionService.confirmTransactions();
         System.out.println(transactionService.findAll());

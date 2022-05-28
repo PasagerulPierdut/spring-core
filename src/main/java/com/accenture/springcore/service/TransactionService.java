@@ -1,9 +1,9 @@
 package com.accenture.springcore.service;
 
-import com.accenture.springcore.controller.SortCriteriaInfo;
+import com.accenture.springcore.model.Dto.SortCriteriaInfo;
 import com.accenture.springcore.exception.customExceptions.EntityNotFoundException;
-import com.accenture.springcore.model.Product;
-import com.accenture.springcore.model.Transaction;
+import com.accenture.model.Product;
+import com.accenture.model.Transaction;
 import com.accenture.springcore.model.TransactionType;
 import com.accenture.springcore.repository.TransactionRepository;
 import com.accenture.springcore.utils.validator.ValidTransaction;
@@ -92,10 +92,7 @@ public class TransactionService extends BaseService<Transaction, Integer> {
     }
 
     public List<Transaction> getAllConfirmedTransactions() {
-        return transactionRepository.findAll().stream()
-                .filter(transaction -> transaction.getCreatedAt().isAfter(
-                        LocalDateTime.now().minusMonths(1)) && (transaction.isConfirmed()))
-                .toList();
+        return transactionRepository.findAllByConfirmationStatus();
     }
 
     public void confirmTransactions() {

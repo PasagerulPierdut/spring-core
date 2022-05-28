@@ -1,4 +1,4 @@
-package com.accenture.springcore.controller;
+package com.accenture.springcore.model.Dto;
 
 import com.accenture.springcore.model.TransactionType;
 
